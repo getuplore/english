@@ -1,6 +1,7 @@
 // Question makers for English. Each returns { template, prompt, answer, data, say, hint, solution }.
 import { pick, shuffle } from '../core/ui.js';
 import { mouth, MOUTH_TIP, mouthShape } from '../core/art.js';
+import { GEN_EX } from './explore.js';
 import { GROUPS, lettersUpTo, START, ENDS, CVC, sounds, decodable, TRICKY, RHYMES, RHYMES_EASY, VOCAB, COLOURS, STORIES } from './words.js';
 
 const esc = s => String(s).replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
@@ -14,7 +15,8 @@ const letterBig = l => `<div class="bigl"><span class="glyph">${esc(l)}</span>${
 function soundPic({ group, upTo }) {
   const letters = GROUPS[group], l = pick(letters), [w, e] = pick(START[l]);
   const others = allStartWords(upTo ? lettersUpTo(upTo) : Object.keys(START)).filter(([ol, [ow]]) => ol !== l && !sounds(ow).includes(l) && ow[0] !== w[0]);
-  const wrong = take(others, 2).map(([, x]) => x);
+  const seen = new Set([w]), uniq = others.filter(([, [ow]]) => !seen.has(ow) && seen.add(ow));
+  const wrong = take(uniq, 2).map(([, x]) => x);
   const { options, answer } = placeAnswer([w, e], wrong);
   const end = ENDS.has(l);
   return { template: 'choose', prompt: `Which picture ${end ? 'ends' : 'starts'} with this sound?`, answer,
@@ -86,4 +88,4 @@ function story({ ids }) {
     hint: 'Read the story again. Tap any word to hear it.', solution: [`The answer is <b>${esc(right)}</b>.`] };
 }
 
-export const GEN = { soundPic, firstLetter, blend, spellWord, tricky, rhyme, vocab, story };
+export const GEN = { soundPic, firstLetter, blend, spellWord, tricky, rhyme, vocab, story, ...GEN_EX };

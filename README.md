@@ -34,9 +34,13 @@ The page loads one packed file, `js/app.js` (older iPads too). After changing an
 - `js/engine/`: lesson player (hints, worked answers, mastery, stickers) and activity templates (choose, blend, spell, story).
 - `js/core/`: storage, account and sync, country spelling (British for India, UK and Canada; American for the USA), sounds and voice, drawings (Pip, mouth pictures for letter sounds).
 
-## Lessons so far (Little Learners, JK to Grade 1)
+## Lessons so far (81)
 
-Letter sounds in six groups (s a t p · i n m d · g o c k · e u r h ck · b f l j · v w x y z qu) with mouth pictures, first sounds, blending, spelling, tricky words, rhymes, picture words (animals, food, colours, body, clothes, home, travel) and six short stories with questions. 33 lessons.
+**Little Learners, JK to Grade 1 (33):** letter sounds in six groups (s a t p · i n m d · g o c k · e u r h ck · b f l j · v w x y z qu) with mouth pictures, first sounds, blending, spelling, tricky words, rhymes, picture words (animals, food, colours, body, clothes, home, travel) and six short stories with questions.
+
+**Explorers, Grades 2 to 8 (48):** spelling (vowel teams, silent letters, plurals, endings, sound-alike and commonly confused words, tricky spellings), grammar and punctuation (nouns to colons and semicolons, tenses, apostrophes, speech marks, passive, reported speech, conditionals), vocabulary (opposites, synonyms, prefixes, words in context, idioms, word families, formal and informal), six reading passages with questions, and building and joining sentences. Data in `js/content/explore_data.js`, question makers in `js/content/explore.js`.
+
+Little Learners see phonics first; older learners see their own tracks first and start at their own grade, with phonics still available.
 
 The device voice says whole words only; letter sounds are taught with the letter, a mouth picture and example words.
 

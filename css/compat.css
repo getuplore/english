@@ -184,6 +184,14 @@
 .nogap .exsound>*{margin:calc(20px / 2)}
 .nogap .exwords>*{margin:calc(18px / 2)}
 .nogap .exblend>*{margin:calc(14px / 2)}
+.noclamp .qcard{font:700 26px/1.45 var(--font)}
+.noclamp .t-spell .ssent{font-size:22px}
+.noclamp .t-choose.long .opt .word{font:700 21px/1.35 var(--font)}
+.noclamp .t-choose.words .opt .word{font-size:30px}
+.noclamp .t-tapword .tapsent{font:700 34px/2 var(--font)}
+.nogap .oline>*{margin:calc(8px / 2)}
+.nogap .otiles>*{margin:calc(10px / 2)}
+.noclamp .ot,.noclamp .ow{font:700 23px/1 var(--font)}
 .noar .obj{height:calc(clamp(56px,10vw,86px) * 1 / 1)}
 .noar.noclamp .obj{height:calc(86px * 1 / 1)}
 .noar .sil{height:calc(clamp(130px,30vmin,230px) * 1 / 1)}

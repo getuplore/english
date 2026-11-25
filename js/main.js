@@ -13,7 +13,10 @@ import { loc, lvShort, lvLong } from './core/region.js';
 
 const app = $('#app');
 let RAW = [], content = { skills: [], explainers: EXPLAINERS }, tab = null, lastOpen = 0, leaving = false;
-const TRACKS = ['sounds', 'reading', 'tricky', 'words', 'stories'];
+// Little Learners see phonics first; older learners see their own tracks first, with phonics after ("Starting out").
+const TRACKS_LL = ['sounds', 'reading', 'tricky', 'words', 'stories'], TRACKS_EX = ['spelling', 'grammar', 'vocab', 'comp', 'sentences'];
+const tracksFor = mode => mode === 'little' ? [...TRACKS_LL, ...TRACKS_EX] : [...TRACKS_EX, ...TRACKS_LL];
+const groupFor = mode => mode === 'little' ? 'll' : 'ex';
 const LEVELS = ['JK', 'SK', 'G1', 'G2', 'G3', 'G4', 'G5', 'G6', 'G7', 'G8', 'G9', 'G10', 'G11', 'G12'];
 const openLevels = new Map();
 const mount = el => { app.replaceChildren(el); window.scrollTo(0, 0); };
@@ -64,10 +67,13 @@ function home() {
   const p = profile(); if (!p) return toHub();
   applyMode();
   const mode = effectiveMode(p), list = skillsFor(p);
-  const tracks = TRACKS.filter(tk => list.some(s => s.track === tk));
+  const tracks = tracksFor(mode).filter(tk => list.some(s => s.track === tk));
   if (!tracks.includes(tab)) tab = tracks[0];
-  const ordered = list.slice().sort((a, b) => LEVELS.indexOf(a.level) - LEVELS.indexOf(b.level));
-  const up = nextSkill(p, ordered);
+  // Up next: from the learner's own group, nearest their level first.
+  const own_ = list.filter(s => s.group === groupFor(mode));
+  // Phonics is a sequence: little ones start at the beginning. Older learners start at their own grade.
+  const pool = own_.length ? own_ : list;
+  const up = nextSkill(p, mode === 'little' ? pool.slice().sort((a, b) => LEVELS.indexOf(a.level) - LEVELS.indexOf(b.level)) : byAge(p, pool));
   const shown = list.filter(s => s.track === tab);
   const groups = LEVELS.map(lv => [lv, shown.filter(s => s.level === lv)]).filter(([, l]) => l.length);
   const own = LEVELS[Math.max(0, Math.min(13, p.age - 4))], key = p.id + '|' + tab;
@@ -81,7 +87,7 @@ function home() {
       <span class="modechip">${t('mode.' + mode)}</span>${stat}<button class="btn grownbtn progbtn" aria-label="${t('g.progress')}">${ICON.chart}<span>${t('g.progress')}</span></button><button class="btn grownbtn gear" aria-label="${t('ui.settings')}">${ICON.gear}<span>${t('ui.settings')}</span></button></header>
     <div class="hero">${mode !== 'adult' ? `<div class="hpip">${PIP()}</div>` : ''}
       <button class="upnext" data-id="${up.id}"><span class="ic">${badge(up.icon)}</span><span class="ut"><small>${t('ui.upNext')}</small><b>${esc(tr(up.title))}</b><em>${esc(lvShort(up.level))} · ${esc(up.strand)}</em></span><span class="go">${ICON.play}</span></button></div>
-    ${mode !== 'little' ? `<p class="note enmore">${t('home.more')}</p>` : ''}
+    ${mode === 'achieve' || mode === 'adult' ? `<p class="note enmore">${t('home.more')}</p>` : ''}
     <nav class="tabs" role="tablist">${tracks.map(tk => `<button role="tab" class="tab${tk === tab ? ' on' : ''}" aria-selected="${tk === tab}" data-t="${tk}">${t('track.' + tk)}</button>`).join('')}</nav>
     ${groups.map(([lv, l]) => `<details class="lvl" data-lv="${lv}"${opened.has(lv) ? ' open' : ''}><summary class="lvlh"><span class="lvn">${lvLong(lv)}</span>${lv === own ? `<span class="you">${t('lvl.yours')}</span>` : ''}<small>${l.filter(s => status(p.progress[s.id]) === 'mastered').length}/${l.length}</small><span class="chev" aria-hidden="true"></span></summary><div class="skills">${l.map(s => card(p, s, mode)).join('')}</div></details>`).join('')}
   </section>`);

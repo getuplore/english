@@ -84,14 +84,24 @@ def hub_signin(p, email):
     p.fill('#em', email); p.fill('#pw', 'password1'); p.click('#f .go')
 
 def open_skill(p, name):
-    loc = p.locator(f'.skill:has-text("{name}")').first
-    if not loc.is_visible():
-        p.evaluate("(n) => { const b = [...document.querySelectorAll('.skill')].find(x => x.textContent.includes(n)); if (b) b.closest('details').open = true; }", name)
-    p.locator(f'.skill:has-text("{name}")').first.click()
+    """Open the lesson whose title is exactly `name`, or else the first whose title starts with it."""
+    ok = p.evaluate("""(n) => { const all = [...document.querySelectorAll('.skill')];
+      const b = all.find(x => x.querySelector('.sk b').textContent.trim() === n) || all.find(x => x.querySelector('.sk b').textContent.trim().startsWith(n)) || all.find(x => x.textContent.includes(n));
+      if (!b) return false; b.closest('details').open = true; b.click(); return true; }""", name)
+    assert ok, 'lesson not found: ' + name
 
 def answer_item(p):
     """Answer the current activity correctly using the lesson's own data (#debug exposes it)."""
     a = p.evaluate("window.__act && { t: window.__act.template, a: window.__act.answer, tiles: (window.__act.data || {}).tiles || null }")
+    if a['t'] == 'spell' and isinstance(a['tiles'], list) and all(len(x) == 1 for x in a['tiles']) and a['a'] and len(a['a']) > 3: pass
+    if a['t'] == 'tapword':
+        p.click(f'.tapw[data-i="{a["a"]}"]'); return
+    if a['t'] == 'order':
+        words = a['a'].split(' '); used = set()
+        tiles = p.evaluate("window.__act.data.tiles")
+        for w in words:
+            k = next(i for i, x in enumerate(tiles) if x == w and i not in used); used.add(k); p.click(f'.ot[data-i="{k}"]')
+        p.click('.ocheck'); return
     if a['t'] == 'spell':
         tiles = list(a['tiles']); word = a['a']; i = 0
         while i < len(word):
@@ -134,7 +144,7 @@ def run(size):
         p.click('.chip[data-id="pK"]'); p.click('a.tile.live[href="english/"]'); wait_path(p, '/english/'); p.wait_for_selector('.home.en .htop')
         check(tag + 'English opens straight into Kiran', 'Kiran' in p.inner_text('.htop') and p.evaluate("document.documentElement.dataset.mode") == 'little')
         check(tag + '"← Uplore" link in the header', p.get_attribute('.htop .uplink', 'href') == '../')
-        check(tag + 'five tracks: sounds, reading, tricky words, words & rhymes, stories', p.locator('.tabs .tab').count() == 5)
+        check(tag + 'little one: the five phonics tabs come first', [p.locator('.tabs .tab').nth(i).get_attribute('data-t') for i in range(5)] == ['sounds', 'reading', 'tricky', 'words', 'stories'])
         check(tag + 'Up next is the first sounds lesson', 's a t p' in p.inner_text('.upnext'))
         p.click('.tab[data-t="words"]')
         check(tag + 'USA family: American spelling ("Color words")', p.locator('.skill:has-text("Color words")').count() == 1 and p.locator('.skill:has-text("Colour words")').count() == 0)
@@ -216,8 +226,40 @@ def run(size):
         p.click('[data-edit="pK"]'); p.click('#rm'); p.click('#rm'); p.wait_for_selector('#gadd'); p.wait_for_timeout(800)
         check(tag + 'removed learner: English progress deleted here and in the account', 'pK' not in F.english['u1'] and 'pK' not in (p.evaluate("JSON.parse(localStorage.getItem('uplore.english.v1'))") or {}))
 
+        # 9b. Explorers: Meera (10) sees Grades 2–8 lessons first and can play each new kind of activity.
+        p.click('#gout'); p.wait_for_selector('#sin2'); hub_signin(p, 'fam@x.io'); p.wait_for_selector('.chip[data-id]')
+        p.click('.chip[data-id="pM"]'); p.click('a.tile.live[href="english/"]'); wait_path(p, '/english/'); p.wait_for_selector('.home.en')
+        check(tag + 'Explorer: Spelling tab first, Grammar next', p.inner_text('.tabs .tab >> nth=0') == 'Spelling' and 'Grammar' in p.inner_text('.tabs .tab >> nth=1'))
+        check(tag + 'Explorer: Up next is a Grades 2–8 lesson', re.search(r'\bG[2-8]\b', p.inner_text('.upnext')) is not None)
+        check(tag + 'Explorer: no "being built" note for Grades 2–8', p.locator('.enmore').count() == 0)
+        check(tag + 'Explorer: phonics still there (Letter sounds tab)', p.locator('.tab[data-t="sounds"]').count() == 1)
+        p.evaluate("location.hash = 'debug'")
+        for track, name, sel in (('grammar', 'Verbs', '.t-tapword .tapw'), ('sentences', 'Build a sentence', '.t-order .ot'), ('spelling', 'Spell: ai, ay', '.t-spell .ssent'), ('comp', 'Read: Honey bees', '.t-story .storycard'), ('grammar', 'Speech marks', '.t-choose.long .opt')):
+            p.click(f'.tab[data-t="{track}"]'); open_skill(p, name); p.wait_for_selector('.player')
+            if p.is_visible('.t-ex'): p.click('.exskip')
+            p.wait_for_selector(sel, timeout=6000)
+            ov = p.evaluate("document.documentElement.scrollWidth > window.innerWidth + 1")
+            before = p.evaluate("JSON.stringify(window.__act.data)"); answer_item(p)
+            p.wait_for_function("(b) => JSON.stringify(window.__act.data) !== b || document.querySelector('.results')", arg=before, timeout=8000)
+            check(tag + f'Explorer {name}: shows, fits the screen, right answer accepted', not ov)
+            p.click('.pclose'); p.wait_for_selector('.home.en'); p.wait_for_timeout(1600)
+        # A whole lesson to the end: coins for Explorers, progress backed up.
+        p.click('.tab[data-t="grammar"]'); open_skill(p, 'Nouns'); p.wait_for_selector('.t-tapword')
+        for _ in range(10):
+            if p.is_visible('.results'): break
+            before = p.evaluate("JSON.stringify(window.__act.data)"); answer_item(p)
+            p.wait_for_function("(b) => document.querySelector('.results') || JSON.stringify(window.__act.data) !== b", arg=before, timeout=8000)
+        p.wait_for_selector('.results')
+        check(tag + 'Explorer lesson finished: 6 of 6 and coins', '6 of 6' in p.inner_text('.results') and 'coins' in p.inner_text('.results'))
+        for _ in range(40):
+            if 'en-gr-noun' in F.english['u1'].get('pM', {}).get('progress', {}): break
+            p.wait_for_timeout(250)
+        check(tag + 'Explorer progress backed up', 'en-gr-noun' in F.english['u1'].get('pM', {}).get('progress', {}))
+
         # 10. Admin page: English tab with its own figures (owner only).
-        p.click('#gout'); p.wait_for_selector('#sin2'); hub_signin(p, 'own@x.io'); p.wait_for_selector('.chip[data-id]')
+        p.goto(BASE); p.wait_for_selector('#out'); p.click('#out')
+        if p.is_visible('#warn'): p.click('#out')
+        p.wait_for_selector('#sin2'); hub_signin(p, 'own@x.io'); p.wait_for_selector('.chip[data-id]')
         p.goto(BASE + 'admin/'); p.wait_for_selector('.panel .kpis'); p.click('.tabs button[data-s="english"]'); p.wait_for_selector('.panel h2:has-text("English")'); p.wait_for_selector('.panel .kpis')
         adm = p.inner_text('#main')
         check(tag + 'Admin: English tab shows English figures and lesson names', 'USA' in adm and 'Sounds: s a t p' in adm and p.locator('.tabs button[disabled]').count() == 2)

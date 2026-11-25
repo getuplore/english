@@ -21,7 +21,7 @@ const opts = d => `<div class="opts n${d.options.length}">${d.options.map((o, i)
 export const choose = {
   render(host, act, ctx) {
     const d = act.data;
-    host.innerHTML = `<div class="t-choose${d.letters ? ' letters' : ''}${d.words ? ' words' : ''}${d.pics ? ' pics' : ''}">${d.show ? `<div class="show">${d.show}</div>` : ''}${opts(d)}</div>`;
+    host.innerHTML = `<div class="t-choose${d.letters ? ' letters' : ''}${d.words ? ' words' : ''}${d.pics ? ' pics' : ''}${d.long ? ' long' : ''}">${d.show ? `<div class="show">${d.show}</div>` : ''}${opts(d)}</div>`;
     const g = optionsGrid(host, d, ctx);
     return { hint: l => g.hint(l, act.answer) };
   }
@@ -45,7 +45,7 @@ export const blend = {
 export const spell = {
   render(host, act, ctx) {
     const d = act.data, filled = [];
-    host.innerHTML = `<div class="t-spell"><div class="show"><div class="bigpic"><span class="pic">${d.pic}</span></div><button class="btn hear" aria-label="${t('ui.listen')}">${ICON.speak}</button></div>
+    host.innerHTML = `<div class="t-spell"><div class="show">${d.pic ? `<div class="bigpic"><span class="pic">${d.pic}</span></div>` : ''}<button class="btn hear" aria-label="${t('ui.listen')}">${ICON.speak}</button></div>${d.sentence ? `<div class="qcard ssent">${esc(d.sentence).replace('___', '<span class="gap">___</span>')}</div>` : ''}
       <div class="slots">${Array.from({ length: d.n }, () => '<span class="slot"></span>').join('')}</div>
       <div class="tiles">${d.tiles.map((s, i) => `<button class="tile" data-i="${i}">${esc(s)}</button>`).join('')}</div>
       <div class="row spellrow"><button class="btn sback">⌫</button><button class="btn primary scheck" disabled>${t('ui.check')}</button></div></div>`;
@@ -70,5 +70,37 @@ export const story = {
     host.querySelector('.readme').onclick = () => say(st.text);
     const g = optionsGrid(host, d, ctx);
     return { hint: l => g.hint(l, act.answer) };
+  }
+};
+
+// Tap a word in a sentence (find the verb, the word that needs a capital…).
+export const tapword = {
+  render(host, act, ctx) {
+    const d = act.data;
+    host.innerHTML = `<div class="t-tapword"><p class="tapsent">${d.words.map((w, i) => `<button class="tapw" data-i="${i}">${esc(w)}</button>`).join(' ')}</p></div>`;
+    host.querySelector('.tapsent').addEventListener('click', e => {
+      const b = e.target.closest(".tapw"); if (!b || b.disabled) return;
+      const r = ctx.submit(+b.dataset.i);
+      if (r.ok) { b.classList.add('ok'); squash(b); } else { b.classList.add('bad'); b.disabled = true; wiggle(b); }
+    });
+    return { hint(l) { if (l < 2) return; $$(".tapw:not([disabled])", host).filter(b => +b.dataset.i !== act.answer).slice(0, Math.floor(d.words.length / 2)).forEach(b => { b.disabled = true; b.classList.add('dim'); }); } };
+  }
+};
+
+// Put word tiles in order to build a sentence.
+export const order = {
+  render(host, act, ctx) {
+    const d = act.data, line = [];
+    host.innerHTML = `<div class="t-order"><div class="oline" aria-live="polite"></div><div class="otiles">${d.tiles.map((w, i) => `<button class="ot" data-i="${i}">${esc(w)}</button>`).join('')}</div>
+      <div class="row spellrow"><button class="btn oback">⌫</button><button class="btn primary ocheck" disabled>${t('ui.check')}</button></div></div>`;
+    const ol = host.querySelector('.oline'), tiles = $$('.ot', host), chk = host.querySelector('.ocheck');
+    const draw = () => { ol.innerHTML = line.length ? line.map((i, k) => `<button class="ow" data-k="${k}">${esc(d.tiles[i])}</button>`).join(' ') : '<span class="ohint">Tap the words in order.</span>'; tiles.forEach((b, i) => { b.disabled = line.includes(i); }); chk.disabled = line.length !== d.n; };
+    tiles.forEach((b, i) => b.onclick = () => { line.push(i); sfx.pop(); draw(); });
+    ol.addEventListener('click', e => { const b = e.target.closest('.ow'); if (b) { line.splice(+b.dataset.k); sfx.tap(); draw(); } });
+    host.querySelector('.oback').onclick = () => { line.pop(); sfx.tap(); draw(); };
+    chk.onclick = () => { const r = ctx.submit(line.map(i => d.tiles[i]).join(' ')); if (!r.ok) { wiggle(ol); line.length = 0; draw(); } };
+    draw();
+    const target = act.answer.split(' ');
+    return { hint(l) { if (l < 2) return; line.length = 0; const i = d.tiles.findIndex(w => w === target[0]); if (i >= 0) line.push(i); draw(); } };
   }
 };

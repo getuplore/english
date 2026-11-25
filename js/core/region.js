@@ -21,8 +21,8 @@ export const isUS = () => regionId() === 'us';
 
 // Spelling: British for India, UK and Canada; American for the USA. "Mum" is "Mom" in North America.
 const US = [[/\bcolour/g, 'color'], [/\bColour/g, 'Color'], [/\bfavourite/g, 'favorite'], [/\bFavourite/g, 'Favorite'], [/\bgrey\b/g, 'gray'], [/\bGrey\b/g, 'Gray'],
-  [/\bcentre\b/g, 'center'], [/\bmum\b/g, 'mom'], [/\bMum\b/g, 'Mom'], [/\bpyjamas\b/g, 'pajamas'], [/\btrousers\b/g, 'pants'], [/\bjumper\b/g, 'sweater'], [/\bbiscuit/g, 'cookie'], [/\bmaths\b/g, 'math']];
-const CA = [[/\bmum\b/g, 'mom'], [/\bMum\b/g, 'Mom'], [/\bjumper\b/g, 'sweater'], [/\bbiscuit/g, 'cookie']];
+  [/\bcentre\b/g, 'center'], [/\bmum\b/g, 'mom'], [/\bMum\b/g, 'Mom'], [/\bpyjamas\b/g, 'pajamas'], [/\btrousers\b/g, 'pants'], [/\bjumper\b/g, 'sweater'], [/\bbiscuit/g, 'cookie'], [/\bmaths\b/g, 'math'], [/\bspelt\b/g, 'spelled'], [/\bapologise/g, 'apologize'], [/\btonnes\b/g, 'tons'], [/\btravelled\b/g, 'traveled'], [/\bpedalled\b/g, 'pedaled'], [/\btorch\b/g, 'flashlight']];
+const CA = [[/\btorch\b/g, 'flashlight'], [/\bmum\b/g, 'mom'], [/\bMum\b/g, 'Mom'], [/\bjumper\b/g, 'sweater'], [/\bbiscuit/g, 'cookie']];
 export function spell(s) {
   if (typeof s !== 'string') return s;
   const rules = regionId() === 'us' ? US : regionId() === 'canada' ? CA : [];

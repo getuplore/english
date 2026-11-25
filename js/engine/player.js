@@ -62,7 +62,9 @@ export async function playSkill(skill, content, { mount, onExit, mode: forced, l
   const genOf = () => skill.seq ? skill.seq[seqI++ % skill.seq.length] : skill.mix ? skill.mix[Math.floor(Math.random() * skill.mix.length)] : skill.gen;
   // No question twice in one lesson (small question pools are re-drawn a few times).
   const seen = new Set();
-  const keyOf = a => [a.template, String(a.prompt).replace(/<svg[\s\S]*?<\/svg>/g, ''), JSON.stringify(a.answer), JSON.stringify((a.data && (a.data.options || a.data.labels)) || '')].join('|');
+  // What makes a question different: its options, sentence words, word to spell, tiles or passage.
+  const keyOf = a => { const d = a.data || {}; return [a.template, String(a.prompt).replace(/<svg[\s\S]*?<\/svg>/g, ''), JSON.stringify(a.answer),
+    JSON.stringify(d.options || d.words || d.word || (d.tiles && [...d.tiles].sort()) || ''), d.show || d.sentence || (d.story && d.story.title) || ''].join('|'); };
   const nextAct = () => { let a; for (let k = 0; k < 15; k++) { a = loc(GEN[genOf()](skill.params || {})); if (!seen.has(keyOf(a))) break; if (skill.seq && k < 14) seqI--; } seen.add(keyOf(a)); return a; };
   const firstAct = nextAct();
 
