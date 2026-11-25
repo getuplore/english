@@ -104,3 +104,91 @@ export const order = {
     return { hint(l) { if (l < 2) return; line.length = 0; const i = d.tiles.findIndex(w => w === target[0]); if (i >= 0) line.push(i); draw(); } };
   }
 };
+
+// ---------- Hands-on templates ----------
+import { draggable, goHome, flyTo } from '../../core/ui.js';
+// A finished hands-on round counts as right first time only if there were no slips.
+const finish = (ctx, slips) => ctx.submit('done', { assisted: slips > 0 });
+
+// Sort it: drag (or tap, then tap a box) each word into its box.
+export const sortit = {
+  render(host, act, ctx) {
+    const d = act.data; let picked = null, slips = 0, left = d.words.length;
+    host.innerHTML = `<div class="t-esort"><div class="echips">${d.words.map((x, i) => `<button class="echip" data-i="${i}">${esc(x.w)}</button>`).join('')}</div>
+      <div class="boxes n${d.boxes.length}">${d.boxes.map(b => `<div class="sbox" role="button" tabindex="0" data-b="${esc(b)}"><b>${esc(b)}</b><div class="sin"></div></div>`).join('')}</div></div>`;
+    const boxes = $$('.sbox', host), chips = $$('.echip', host);
+    const place = (el, box) => {
+      const w = d.words[+el.dataset.i];
+      if (w.b !== box.dataset.b) { slips++; sfx.boing(); wiggle(box); goHome(el); el.classList.remove('is-sel'); picked = null; return; }
+      sfx.pop(); el.dataset.used = 1; el.classList.remove('is-sel'); el.classList.add('placed');
+      el.style.transform = ''; el._x = el._y = 0; box.querySelector('.sin').append(el); squash(box); picked = null;
+      if (--left === 0) setTimeout(() => finish(ctx, slips), 250);
+    };
+    chips.forEach(el => draggable(el, { targets: () => boxes, onDrop: place, onTap: e => { chips.forEach(c => c.classList.toggle('is-sel', c === e && !e.dataset.used)); picked = e.dataset.used ? null : e; sfx.tap(); } }));
+    boxes.forEach(b => { const go = () => { if (picked) place(picked, b); }; b.addEventListener('click', go); b.addEventListener('keydown', e => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); go(); } }); });
+    return { hint() { const c = chips.find(x => !x.dataset.used); if (!c) return; const b = boxes.find(x => x.dataset.b === d.words[+c.dataset.i].b); c.classList.add('is-sel'); picked = c; b.classList.add('glow'); setTimeout(() => b.classList.remove('glow'), 1400); } };
+  }
+};
+
+// Match pairs: tap a word on the left, then its partner on the right.
+export const pairs = {
+  render(host, act, ctx) {
+    const d = act.data; let sel = null, slips = 0, done = 0;
+    const partner = Object.fromEntries(d.pairs);
+    host.innerHTML = `<div class="t-pairs"><div class="pcol">${d.left.map((w, i) => `<button class="pw L" data-w="${esc(w)}">${esc(w)}</button>`).join('')}</div>
+      <div class="pcol">${d.right.map(w => `<button class="pw R" data-w="${esc(w)}">${esc(w)}</button>`).join('')}</div></div>`;
+    const L = $$('.pw.L', host), Rr = $$('.pw.R', host), colours = ['#ffd43b', '#74c0fc', '#8ce99a', '#ffa8a8'];
+    L.forEach(b => b.onclick = () => { if (b.disabled) return; sel = b; L.forEach(x => x.classList.toggle('is-sel', x === b)); sfx.tap(); });
+    Rr.forEach(b => b.onclick = () => {
+      if (b.disabled) return;
+      if (!sel) { wiggle(L.find(x => !x.disabled) || b); return; }
+      if (partner[sel.dataset.w] === b.dataset.w) {
+        const c = colours[done % colours.length]; [sel, b].forEach(x => { x.disabled = true; x.classList.remove('is-sel'); x.classList.add('matched'); x.style.setProperty('--m', c); squash(x); });
+        if (d.joiner === '') { b.textContent = sel.dataset.w + b.dataset.w; }
+        sfx.pop(); sel = null; if (++done === d.pairs.length) setTimeout(() => finish(ctx, slips), 300);
+      } else { slips++; sfx.boing(); wiggle(b); }
+    });
+    return { hint() { const a = L.find(x => !x.disabled); if (!a) return; const b = Rr.find(x => x.dataset.w === partner[a.dataset.w]); [a, b].forEach(x => x.classList.add('glow')); setTimeout(() => [a, b].forEach(x => x.classList.remove('glow')), 1400); } };
+  }
+};
+
+// Spot and fix: tap the wrong word, then choose its fix.
+export const fixit = {
+  render(host, act, ctx) {
+    const d = act.data;
+    host.innerHTML = `<div class="t-fix"><p class="tapsent">${d.words.map((w, i) => `<button class="tapw" data-i="${i}">${esc(w)}</button>`).join(' ')}</p><div class="fixbox" aria-live="polite"></div></div>`;
+    const box = host.querySelector('.fixbox');
+    host.querySelector('.tapsent').addEventListener('click', e => {
+      const b = e.target.closest('.tapw'); if (!b || b.disabled) return;
+      if (+b.dataset.i !== d.at) { const r = ctx.submit('tap:' + b.dataset.i); if (!r.ok) { b.classList.add('bad'); b.disabled = true; wiggle(b); } return; }
+      b.classList.add('found'); squash(b); sfx.pop();
+      box.innerHTML = `<p class="fixq">Change <b>${esc(d.wrong)}</b> to:</p><div class="opts n${d.options.length}">${d.options.map((o, k) => `<button class="opt" data-k="${k}"><span class="word">${esc(o)}</span></button>`).join('')}</div>`;
+      $$('.opt', box).forEach(o => o.onclick = () => {
+        if (o.disabled) return; const r = ctx.submit('fix:' + d.options[+o.dataset.k]);
+        if (r.ok) { o.classList.add('ok'); b.textContent = d.words[d.at].replace(d.wrong, d.options[+o.dataset.k]); b.classList.add('fixed'); } else { o.classList.add('bad'); o.disabled = true; wiggle(o); }
+      });
+    });
+    return { hint(l) { if (l < 2) return; const b = host.querySelector(`.tapw[data-i="${d.at}"]`); b.classList.add('glow'); setTimeout(() => b.classList.remove('glow'), 1600); } };
+  }
+};
+
+// Punctuate it: pick a mark, then tap the gap after a word. Tap again to remove.
+export const punctuate = {
+  render(host, act, ctx) {
+    const d = act.data, MARKS = ['.', ',', '?', '!'], placed = {}; let mark = '.';
+    host.innerHTML = `<div class="t-punct"><div class="marks">${MARKS.map(m => `<button class="mk${m === mark ? ' on' : ''}" data-m="${m}" aria-label="${{ '.': 'full stop', ',': 'comma', '?': 'question mark', '!': 'exclamation mark' }[m]}">${m}</button>`).join('')}</div>
+      <p class="psent">${d.words.map((w, i) => `<span class="pword">${esc(w)}</span><button class="pgap" data-i="${i}" aria-label="Gap after ${esc(w)}"></button>`).join(' ')}</p>
+      <div class="row spellrow"><button class="btn primary pcheck">${t('ui.check')}</button></div></div>`;
+    const gaps = $$('.pgap', host);
+    const draw = () => gaps.forEach(g => { const m = placed[g.dataset.i]; g.textContent = m || ''; g.classList.toggle('on', !!m); });
+    $$('.mk', host).forEach(b => b.onclick = () => { mark = b.dataset.m; $$('.mk', host).forEach(x => x.classList.toggle('on', x === b)); sfx.tap(); });
+    gaps.forEach(g => g.onclick = () => { const i = g.dataset.i; if (placed[i] === mark) delete placed[i]; else placed[i] = mark; sfx.pop(); squash(g); draw(); });
+    host.querySelector('.pcheck').onclick = () => {
+      const key = Object.keys(placed).sort((a, b) => a - b).map(k => `${k}${placed[k]}`).join('|');
+      const r = ctx.submit(key);
+      if (!r.ok) { const want = Object.fromEntries(act.answer.split('|').map(x => [x.slice(0, -1), x.slice(-1)])); Object.keys(placed).forEach(k => { if (want[k] !== placed[k]) { delete placed[k]; } }); draw(); wiggle(host.querySelector('.psent')); }
+    };
+    draw();
+    return { hint(l) { if (l < 2) return; const want = act.answer.split('|')[0]; const g = gaps[+want.slice(0, -1)]; g.classList.add('glow'); setTimeout(() => g.classList.remove('glow'), 1600); } };
+  }
+};

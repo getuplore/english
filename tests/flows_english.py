@@ -94,6 +94,21 @@ def answer_item(p):
     """Answer the current activity correctly using the lesson's own data (#debug exposes it)."""
     a = p.evaluate("window.__act && { t: window.__act.template, a: window.__act.answer, tiles: (window.__act.data || {}).tiles || null }")
     if a['t'] == 'spell' and isinstance(a['tiles'], list) and all(len(x) == 1 for x in a['tiles']) and a['a'] and len(a['a']) > 3: pass
+    if a['t'] in ('sortit', 'pairs', 'fixit', 'punctuate'):
+        d = p.evaluate("window.__act.data"); ans = p.evaluate("window.__act.answer")
+        if a['t'] == 'sortit':
+            for i, w in enumerate(d['words']):
+                p.locator(f'.echip[data-i="{i}"]').click(); k = d['boxes'].index(w['b']); p.locator('.sbox').nth(k).click()
+        elif a['t'] == 'pairs':
+            for l, r in d['pairs']:
+                p.locator('.pw.L').nth(d['left'].index(l)).click(); p.locator('.pw.R').nth(d['right'].index(r)).click()
+        elif a['t'] == 'fixit':
+            p.click(f'.tapw[data-i="{d["at"]}"]'); p.locator('.fixbox .opt').nth(d['options'].index(ans[4:])).click()
+        else:
+            for part in ans.split('|'):
+                p.click(f'.mk[data-m="{part[-1]}"]'); p.click(f'.pgap[data-i="{part[:-1]}"]')
+            p.click('.pcheck')
+        return
     if a['t'] == 'tapword':
         p.click(f'.tapw[data-i="{a["a"]}"]'); return
     if a['t'] == 'order':
@@ -234,7 +249,7 @@ def run(size):
         check(tag + 'Explorer: no "being built" note for Grades 2–8', p.locator('.enmore').count() == 0)
         check(tag + 'Explorer: phonics still there (Letter sounds tab)', p.locator('.tab[data-t="sounds"]').count() == 1)
         p.evaluate("location.hash = 'debug'")
-        for track, name, sel in (('grammar', 'Verbs', '.t-tapword .tapw'), ('sentences', 'Build a sentence', '.t-order .ot'), ('spelling', 'Spell: ai, ay', '.t-spell .ssent'), ('comp', 'Read: Honey bees', '.t-story .storycard'), ('grammar', 'Speech marks', '.t-choose.long .opt')):
+        for track, name, sel in (('grammar', 'Verbs', '.t-tapword .tapw, .t-esort .echip'), ('sentences', 'Build a sentence', '.t-order .ot'), ('spelling', 'Spell: ai, ay', '.t-spell .ssent'), ('comp', 'Read: Honey bees', '.t-story .storycard'), ('grammar', 'Speech marks', '.t-choose.long .opt')):
             p.click(f'.tab[data-t="{track}"]'); open_skill(p, name); p.wait_for_selector('.player')
             if p.is_visible('.t-ex'): p.click('.exskip')
             p.wait_for_selector(sel, timeout=6000)
@@ -243,8 +258,29 @@ def run(size):
             p.wait_for_function("(b) => JSON.stringify(window.__act.data) !== b || document.querySelector('.results')", arg=before, timeout=8000)
             check(tag + f'Explorer {name}: shows, fits the screen, right answer accepted', not ov)
             p.click('.pclose'); p.wait_for_selector('.home.en'); p.wait_for_timeout(1600)
+        # Hands-on activities: sort, match pairs, spot and fix, punctuate.
+        for track, name, sel in (('comp', 'Fact or opinion?', '.t-esort .echip'), ('vocab', 'Compound words', '.t-pairs .pw'), ('grammar', 'Find and fix', '.t-fix .tapw'), ('grammar', 'Commas in lists', '.t-punct .pgap')):
+            p.click(f'.tab[data-t="{track}"]'); open_skill(p, name); p.wait_for_selector('.player'); p.wait_for_selector(sel, timeout=6000)
+            ov = p.evaluate("document.documentElement.scrollWidth > window.innerWidth + 1")
+            before = p.evaluate("JSON.stringify(window.__act.data)"); answer_item(p)
+            p.wait_for_function("(b) => document.querySelector('.results') || JSON.stringify(window.__act.data) !== b", arg=before, timeout=8000)
+            check(tag + f'hands-on {name}: fits the screen and completes', not ov)
+            p.click('.pclose'); p.wait_for_selector('.home.en'); p.wait_for_timeout(1600)
+        # Dragging a word into a box works too (not only tapping), and a wrong box sends it back.
+        p.click('.tab[data-t="comp"]'); open_skill(p, 'Fact or opinion?'); p.wait_for_selector('.t-esort .echip')
+        d = p.evaluate("window.__act.data"); w0 = d['words'][0]; right = d['boxes'].index(w0['b']); wrong = 1 - right
+        def drag_to(k):
+            c = p.locator('.echip[data-i="0"]').bounding_box(); b = p.locator('.sbox').nth(k).bounding_box()
+            p.mouse.move(c['x'] + c['width'] / 2, c['y'] + c['height'] / 2); p.mouse.down()
+            p.mouse.move(c['x'] + 40, c['y'] + 40, steps=5); p.mouse.move(b['x'] + b['width'] / 2, b['y'] + b['height'] / 2, steps=12); p.mouse.up(); p.wait_for_timeout(700)
+        drag_to(wrong)
+        check(tag + 'drag to the wrong box: the word goes back', p.locator('.echips .echip[data-i="0"]').count() == 1)
+        drag_to(right)
+        check(tag + 'drag to the right box: the word stays there', p.locator('.sbox').nth(right).locator('.echip[data-i="0"]').count() == 1)
+        p.click('.pclose'); p.wait_for_selector('.home.en'); p.wait_for_timeout(1600)
+
         # A whole lesson to the end: coins for Explorers, progress backed up.
-        p.click('.tab[data-t="grammar"]'); open_skill(p, 'Nouns'); p.wait_for_selector('.t-tapword')
+        p.click('.tab[data-t="grammar"]'); open_skill(p, 'Nouns'); p.wait_for_selector('.t-tapword, .t-esort')
         for _ in range(10):
             if p.is_visible('.results'): break
             before = p.evaluate("JSON.stringify(window.__act.data)"); answer_item(p)

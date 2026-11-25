@@ -792,10 +792,14 @@
    "strand": "Spelling",
    "icon": "🔍",
    "title": "Which spelling is right?",
-   "gen": "spot",
    "params": {
-    "set": "easy"
-   }
+    "set": "easy",
+    "fix": "spell"
+   },
+   "mix": [
+    "spot",
+    "fixIt"
+   ]
   },
   {
    "id": "en-sp-plural1",
@@ -810,10 +814,14 @@
    "strand": "Spelling",
    "icon": "📦",
    "title": "Plurals: -s and -es",
-   "gen": "plural",
    "params": {
-    "set": "p1"
-   }
+    "set": "p1",
+    "sort": "plural"
+   },
+   "mix": [
+    "plural",
+    "sortIt"
+   ]
   },
   {
    "id": "en-sp-teams2",
@@ -846,10 +854,14 @@
    "strand": "Spelling",
    "icon": "👂",
    "title": "Sound-alike words: to, two, too",
-   "gen": "homophone",
    "params": {
-    "set": "h1"
-   }
+    "set": "h1",
+    "fix": "homo"
+   },
+   "mix": [
+    "homophone",
+    "fixIt"
+   ]
   },
   {
    "id": "en-sp-suffix",
@@ -897,10 +909,14 @@
    "strand": "Spelling",
    "icon": "🔤",
    "title": "Sound-alike words: your, its, where",
-   "gen": "homophone",
    "params": {
-    "set": "h2"
-   }
+    "set": "h2",
+    "fix": "homo"
+   },
+   "mix": [
+    "homophone",
+    "fixIt"
+   ]
   },
   {
    "id": "en-sp-plural2",
@@ -915,10 +931,14 @@
    "strand": "Spelling",
    "icon": "🐭",
    "title": "Tricky plurals",
-   "gen": "plural",
    "params": {
-    "set": "p2"
-   }
+    "set": "p2",
+    "pairs": "irregular"
+   },
+   "mix": [
+    "plural",
+    "pairsIt"
+   ]
   },
   {
    "id": "en-sp-spot2",
@@ -933,10 +953,14 @@
    "strand": "Spelling",
    "icon": "📝",
    "title": "Tricky spellings",
-   "gen": "spot",
    "params": {
-    "set": "hard"
-   }
+    "set": "hard",
+    "fix": "spell"
+   },
+   "mix": [
+    "spot",
+    "fixIt"
+   ]
   },
   {
    "id": "en-sp-homo3",
@@ -969,10 +993,15 @@
    "strand": "Grammar",
    "icon": "🏷️",
    "title": "Nouns",
-   "gen": "tapWord",
    "params": {
-    "set": "noun"
-   }
+    "set": "noun",
+    "sort": "pos3"
+   },
+   "mix": [
+    "tapWord",
+    "tapWord",
+    "sortIt"
+   ]
   },
   {
    "id": "en-gr-verb",
@@ -987,10 +1016,15 @@
    "strand": "Grammar",
    "icon": "🏃",
    "title": "Verbs",
-   "gen": "tapWord",
    "params": {
-    "set": "verb"
-   }
+    "set": "verb",
+    "sort": "pos3"
+   },
+   "mix": [
+    "tapWord",
+    "tapWord",
+    "sortIt"
+   ]
   },
   {
    "id": "en-gr-end",
@@ -1005,10 +1039,14 @@
    "strand": "Punctuation",
    "icon": "❓",
    "title": "Full stops, question marks, exclamation marks",
-   "gen": "pickOne",
    "params": {
-    "set": "endmark"
-   }
+    "set": "endmark",
+    "punct": "end"
+   },
+   "mix": [
+    "pickOne",
+    "punctIt"
+   ]
   },
   {
    "id": "en-gr-cap",
@@ -1059,10 +1097,14 @@
    "strand": "Grammar",
    "icon": "🎨",
    "title": "Adjectives",
-   "gen": "tapWord",
    "params": {
-    "set": "adjective"
-   }
+    "set": "adjective",
+    "sort": "pos3"
+   },
+   "mix": [
+    "tapWord",
+    "sortIt"
+   ]
   },
   {
    "id": "en-gr-past",
@@ -1077,10 +1119,16 @@
    "strand": "Grammar",
    "icon": "⏪",
    "title": "Past tense",
-   "gen": "pickOne",
    "params": {
-    "set": "past"
-   }
+    "set": "past",
+    "sort": "past",
+    "fix": "grammar"
+   },
+   "mix": [
+    "pickOne",
+    "sortIt",
+    "fixIt"
+   ]
   },
   {
    "id": "en-gr-agree",
@@ -1095,10 +1143,14 @@
    "strand": "Grammar",
    "icon": "⚖️",
    "title": "is, are, was, were",
-   "gen": "pickOne",
    "params": {
-    "set": "agree"
-   }
+    "set": "agree",
+    "fix": "grammar"
+   },
+   "mix": [
+    "pickOne",
+    "fixIt"
+   ]
   },
   {
    "id": "en-gr-conj",
@@ -1119,6 +1171,25 @@
    }
   },
   {
+   "id": "en-gr-listcomma",
+   "track": "grammar",
+   "modes": [
+    "explore",
+    "achieve",
+    "adult"
+   ],
+   "group": "ex",
+   "level": "G3",
+   "strand": "Punctuation",
+   "icon": "📝",
+   "title": "Commas in lists",
+   "gen": "punctIt",
+   "params": {
+    "punct": "list"
+   },
+   "items": 5
+  },
+  {
    "id": "en-gr-adv",
    "track": "grammar",
    "modes": [
@@ -1131,10 +1202,14 @@
    "strand": "Grammar",
    "icon": "🐢",
    "title": "Adverbs",
-   "gen": "tapWord",
    "params": {
-    "set": "adverb"
-   }
+    "set": "adverb",
+    "sort": "advadj"
+   },
+   "mix": [
+    "tapWord",
+    "sortIt"
+   ]
   },
   {
    "id": "en-gr-pronoun",
@@ -1185,10 +1260,33 @@
    "strand": "Punctuation",
    "icon": "✂️",
    "title": "Contractions",
-   "gen": "pickOne",
    "params": {
-    "set": "contract"
-   }
+    "set": "contract",
+    "pairs": "contract"
+   },
+   "mix": [
+    "pickOne",
+    "pairsIt"
+   ]
+  },
+  {
+   "id": "en-gr-frontcomma",
+   "track": "grammar",
+   "modes": [
+    "explore",
+    "achieve",
+    "adult"
+   ],
+   "group": "ex",
+   "level": "G4",
+   "strand": "Punctuation",
+   "icon": "⏱️",
+   "title": "Commas after opening words",
+   "gen": "punctIt",
+   "params": {
+    "punct": "front"
+   },
+   "items": 5
   },
   {
    "id": "en-gr-possess",
@@ -1242,6 +1340,24 @@
    "gen": "pickOne",
    "params": {
     "set": "speech"
+   }
+  },
+  {
+   "id": "en-gr-fixit",
+   "track": "grammar",
+   "modes": [
+    "explore",
+    "achieve",
+    "adult"
+   ],
+   "group": "ex",
+   "level": "G5",
+   "strand": "Proofreading",
+   "icon": "🔧",
+   "title": "Find and fix",
+   "gen": "fixIt",
+   "params": {
+    "fix": "mixed"
    }
   },
   {
@@ -1329,7 +1445,13 @@
    "strand": "Vocabulary",
    "icon": "↔️",
    "title": "Opposites",
-   "gen": "opposite"
+   "mix": [
+    "opposite",
+    "pairsIt"
+   ],
+   "params": {
+    "pairs": "opp"
+   }
   },
   {
    "id": "en-vo-syn",
@@ -1344,7 +1466,32 @@
    "strand": "Vocabulary",
    "icon": "🟰",
    "title": "Words that mean the same",
-   "gen": "synonym"
+   "mix": [
+    "synonym",
+    "pairsIt"
+   ],
+   "params": {
+    "pairs": "syn"
+   }
+  },
+  {
+   "id": "en-vo-compound",
+   "track": "vocab",
+   "modes": [
+    "explore",
+    "achieve",
+    "adult"
+   ],
+   "group": "ex",
+   "level": "G3",
+   "strand": "Vocabulary",
+   "icon": "🌻",
+   "title": "Compound words",
+   "gen": "pairsIt",
+   "params": {
+    "pairs": "compound"
+   },
+   "items": 4
   },
   {
    "id": "en-vo-prefix",
@@ -1359,7 +1506,13 @@
    "strand": "Vocabulary",
    "icon": "🧩",
    "title": "Prefixes: un-, dis-, re-, mis-",
-   "gen": "prefix"
+   "mix": [
+    "prefix",
+    "pairsIt"
+   ],
+   "params": {
+    "pairs": "prefix"
+   }
   },
   {
    "id": "en-vo-context",
@@ -1389,7 +1542,13 @@
    "strand": "Vocabulary",
    "icon": "🐈",
    "title": "Idioms",
-   "gen": "idiom"
+   "mix": [
+    "idiom",
+    "pairsIt"
+   ],
+   "params": {
+    "pairs": "idiom"
+   }
   },
   {
    "id": "en-vo-family",
@@ -1419,7 +1578,13 @@
    "strand": "Vocabulary",
    "icon": "🎩",
    "title": "Formal and informal",
-   "gen": "formal"
+   "mix": [
+    "formal",
+    "sortIt"
+   ],
+   "params": {
+    "sort": "formal"
+   }
   },
   {
    "id": "en-co-garden",
@@ -1502,6 +1667,25 @@
     "ids": [
      "letter"
     ]
+   },
+   "items": 4
+  },
+  {
+   "id": "en-co-fact",
+   "track": "comp",
+   "modes": [
+    "explore",
+    "achieve",
+    "adult"
+   ],
+   "group": "ex",
+   "level": "G4",
+   "strand": "Comprehension",
+   "icon": "🧐",
+   "title": "Fact or opinion?",
+   "gen": "sortIt",
+   "params": {
+    "sort": "fact"
    },
    "items": 4
   },

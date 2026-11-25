@@ -173,3 +173,50 @@ export const PASSAGES = {
   letter: { title: 'A letter from camp', pic: '🏕️', text: 'Dear Mum and Dad, Camp is brilliant! Yesterday we paddled a canoe across the lake, and I only fell in once. The food is not as good as yours, but the campfire sausages are amazing. Tomorrow we are climbing Eagle Rock, so wish me luck. I miss Biscuit. Please give him a pat from me. Love, Arjun',
     qs: [['Who wrote the letter?', ['Arjun', 'Mum', 'Biscuit']], ['What happened in the canoe?', ['Arjun fell in once', 'the canoe sank', 'Arjun caught a fish']], ['What is Biscuit most likely to be?', ['a pet', 'a teacher', 'a canoe']], ['How does Arjun feel about tomorrow?', ['a little nervous', 'very bored', 'angry']]] }
 };
+
+// ================= Hands-on activities =================
+// Sort it: boxes and the words that go in each.
+export const SORTS = {
+  pos3: { boxes: ['Noun', 'Verb', 'Adjective'], ask: 'Sort the words: naming, doing or describing?', items: {
+    Noun: ['teacher', 'garden', 'city', 'apple', 'river', 'chair', 'pencil', 'bicycle'], Verb: ['jump', 'eat', 'write', 'laugh', 'build', 'sing', 'carry', 'throw'], Adjective: ['happy', 'tall', 'noisy', 'brave', 'tiny', 'gentle', 'hungry', 'shiny'] } },
+  advadj: { boxes: ['Adjective', 'Adverb'], ask: 'Sort the words: describing a thing, or how something is done?', items: {
+    Adjective: ['quick', 'slow', 'loud', 'happy', 'careful', 'gentle', 'quiet', 'bad'], Adverb: ['quickly', 'slowly', 'loudly', 'happily', 'carefully', 'gently', 'quietly', 'badly'] } },
+  plural: { boxes: ['add -s', 'add -es', 'y → -ies'], ask: 'How does each word make its plural?', items: {
+    'add -s': ['dog', 'book', 'tree', 'car', 'toy', 'day'], 'add -es': ['box', 'bus', 'dish', 'watch', 'fox', 'church'], 'y → -ies': ['baby', 'city', 'party', 'story', 'lady', 'pony'] } },
+  past: { boxes: ['add -ed', 'special past'], ask: 'How does each verb make its past tense?', items: {
+    'add -ed': ['walk', 'play', 'jump', 'look', 'help', 'want', 'kick', 'climb'], 'special past': ['go', 'see', 'eat', 'run', 'take', 'write', 'sing', 'come'] } },
+  fact: { boxes: ['Fact', 'Opinion'], ask: 'Can it be checked (fact), or is it what someone thinks (opinion)?', items: {
+    Fact: ['A week has seven days.', 'Paris is in France.', 'Spiders have eight legs.', 'The Sun is a star.', 'Bees make honey.', 'Ice is frozen water.'],
+    Opinion: ['Cats are the best pets.', 'Summer is better than winter.', 'Pizza is the tastiest food.', 'That film was too long.', 'Blue is a lovely colour.', 'Football is more fun than tennis.'] } },
+  formal: { boxes: ['Formal', 'Informal'], ask: 'Formal (a letter to a school) or informal (a text to a friend)?', items: {
+    Formal: ['Dear Sir or Madam', 'Yours faithfully', 'Please find attached', 'I would be grateful if', 'I look forward to hearing from you', 'Kind regards'],
+    Informal: ['Hey there!', 'See ya!', 'Cheers!', 'No worries', 'Gonna be late', 'Catch you later'] } }
+};
+// Match pairs: [left, right].
+export const PAIRS = {
+  opp: [['hot', 'cold'], ['big', 'small'], ['happy', 'sad'], ['fast', 'slow'], ['day', 'night'], ['wet', 'dry'], ['full', 'empty'], ['loud', 'quiet'], ['early', 'late'], ['push', 'pull']],
+  syn: [['big', 'large'], ['small', 'tiny'], ['begin', 'start'], ['shut', 'close'], ['scared', 'afraid'], ['smart', 'clever'], ['shout', 'yell'], ['jump', 'leap'], ['quick', 'fast'], ['glad', 'happy']],
+  contract: [['do not', "don't"], ['I am', "I'm"], ['we are', "we're"], ['she will', "she'll"], ['they have', "they've"], ['would not', "wouldn't"], ['you are', "you're"], ['cannot', "can't"], ['it is', "it's"], ['let us', "let's"]],
+  irregular: [['child', 'children'], ['mouse', 'mice'], ['tooth', 'teeth'], ['foot', 'feet'], ['man', 'men'], ['woman', 'women'], ['goose', 'geese'], ['person', 'people']],
+  prefix: [['unhappy', 'not happy'], ['rebuild', 'build again'], ['disagree', 'not agree'], ['misspell', 'spell wrongly'], ['untidy', 'not tidy'], ['rewrite', 'write again'], ['dislike', 'not like'], ['unlock', 'open a lock']],
+  idiom: [['raining cats and dogs', 'raining heavily'], ['a piece of cake', 'very easy'], ['break a leg', 'good luck'], ['under the weather', 'a bit ill'], ['once in a blue moon', 'very rarely'], ['hit the books', 'study hard'], ['hold your horses', 'wait a moment']],
+  compound: [['sun', 'flower'], ['foot', 'ball'], ['rain', 'bow'], ['butter', 'fly'], ['tooth', 'brush'], ['star', 'fish'], ['bed', 'room'], ['snow', 'man']]
+};
+export const PAIRS_ASK = { opp: 'Match each word to its opposite.', syn: 'Match the words that mean the same.', contract: 'Match each pair of words to its short form.', irregular: 'Match each word to its plural.',
+  prefix: 'Match each word to its meaning.', idiom: 'Match each saying to what it means.', compound: 'Join the halves to make compound words.' };
+// Spot and fix: *marks the mistake; then [right fix, other choices].
+export const FIX = {
+  homo: [['*Their going to the park.', "They're", 'There'], ['I can *here the birds.', 'hear', 'hare'], ['We swam in the *see.', 'sea', 'sew'], ['Put it over *their.', 'there', "they're"],
+    ['Is this *you\'re bag?', 'your', 'yore'], ['The dog wagged *it\'s tail.', 'its', "its'"], ['I want *too go home.', 'to', 'two'], ['*Witch book is yours?', 'Which', 'Wich'], ['Turn *write at the shop.', 'right', 'rite'], ['We *where late again.', 'were', 'wear']],
+  spell: [['My *freind is coming over.', 'friend', 'frend'], ['I *beleive you.', 'believe', 'belive'], ['It is a *beautifull day.', 'beautiful', 'beutiful'], ['We went to the *libary.', 'library', 'liberry'],
+    ['See you in *Febuary.', 'February', 'Febraury'], ['Please be *carefull.', 'careful', 'carfull'], ['That answer is *definately right.', 'definitely', 'defenitely'], ['We were *runing late.', 'running', 'runnning'], ['The *stoped bus started again.', 'stopped', 'stopt'], ['Two *babys were asleep.', 'babies', 'babyes']],
+  grammar: [['The dogs *is barking.', 'are', 'be'], ['Yesterday I *goed home.', 'went', 'gone'], ['She *catched the ball.', 'caught', 'catch'], ['We *was late.', 'were', 'be'], ['He *don\'t like peas.', "doesn't", 'do'],
+    ['I have *ate my lunch.', 'eaten', 'eat'], ['There *is three apples.', 'are', 'be'], ['The children *plays outside.', 'play', 'playing'], ['She *runned to school.', 'ran', 'run'], ['They *was singing.', 'were', 'be']]
+};
+// Punctuate it: {mark} after a word. Marks offered: . , ? !
+export const PUNCT = {
+  end: ['Where is my coat{?}', 'I like ice cream{.}', 'What a lovely surprise{!}', 'Can you hear the rain{?}', 'The cat is asleep{.}', 'Hooray{,} we won{!}', 'Do you want an apple{?}', 'We are going home{.}'],
+  list: ['I packed a hat{,} a coat{,} some gloves and a scarf{.}', 'We saw lions{,} tigers{,} zebras and monkeys{.}', 'Can you bring milk{,} eggs and bread{?}', 'Mum bought apples{,} pears{,} plums and grapes{.}', 'My bag has pens{,} pencils and a ruler{.}', 'We need flour{,} sugar{,} butter and eggs{.}'],
+  front: ['After lunch{,} we played football{.}', 'Slowly{,} the tortoise crossed the road{.}', 'In the morning{,} we went swimming{.}', 'Without a sound{,} the cat crept away{.}', 'Before school{,} I brush my teeth{.}', 'Suddenly{,} the lights went out{!}', 'Later that day{,} it began to snow{.}']
+};
+export const PUNCT_ASK = { end: 'Add the mark at the end.', list: 'Add the commas and the end mark.', front: 'Add the comma after the opening words, and the end mark.' };

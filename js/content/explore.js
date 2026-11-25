@@ -87,3 +87,39 @@ function comprehension({ ids }) {
 }
 
 export const GEN_EX = { spellIt, spot, homophone, plural, suffix, tapWord, pickOne, opposite, synonym, prefix, context, idiom, family, formal, order, comprehension };
+
+// ================= Hands-on activities =================
+import { SORTS, PAIRS, PAIRS_ASK, FIX, PUNCT, PUNCT_ASK } from './explore_data.js';
+// Sort words into boxes: 6 words, at least one per box.
+function sortIt({ sort }) {
+  const S = SORTS[sort], per = Math.max(2, Math.floor(6 / S.boxes.length));
+  const words = shuffle(S.boxes.flatMap(b => shuffle(S.items[b]).slice(0, per).map(w => ({ w, b }))));
+  return { template: 'sortit', prompt: S.ask, answer: 'done', data: { boxes: S.boxes, words },
+    hint: 'Tap a word, then tap its box. Read each word in a sentence if you are not sure.', solution: S.boxes.map(b => `<b>${esc(b)}:</b> ${words.filter(x => x.b === b).map(x => esc(x.w)).join(', ')}`) };
+}
+// Match pairs: 4 pairs, both columns shuffled.
+function pairsIt({ pairs }) {
+  const ps = shuffle(PAIRS[pairs]).slice(0, 4);
+  return { template: 'pairs', prompt: PAIRS_ASK[pairs], answer: 'done', data: { left: ps.map(p => p[0]), right: shuffle(ps.map(p => p[1])), pairs: ps, joiner: pairs === 'compound' ? '' : null },
+    hint: 'Tap a word on the left, then its partner on the right.', solution: ps.map(([a, b]) => `${esc(a)} → <b>${esc(b)}</b>`) };
+}
+// Spot and fix: tap the wrong word, then choose the fix.
+function fixIt({ fix }) {
+  const list = fix === 'mixed' ? [...FIX.homo, ...FIX.spell, ...FIX.grammar] : FIX[fix];
+  const [s, right, ...other] = pick(list), words = s.split(' '), at = words.findIndex(x => x.startsWith('*'));
+  const clean = words.map(x => x.replace('*', '')), wrongWord = clean[at].replace(/[.,!?]/g, '');
+  const opts = shuffle([right, ...other]);
+  return { template: 'fixit', prompt: 'Find the mistake, tap it, then fix it.', answer: 'fix:' + right, data: { words: clean, at, wrong: wrongWord, options: opts },
+    hint: { homo: 'Look for a word that sounds right but is spelt wrong for its meaning.', spell: 'Look for a word that is spelt wrongly.', grammar: 'Read it aloud: which word sounds wrong?', mixed: 'Read it slowly, word by word.' }[fix],
+    solution: [clean.map((w, i) => i === at ? `<b>${esc(w.replace(wrongWord, right))}</b>` : esc(w)).join(' ')] };
+}
+// Punctuate it: place . , ? ! after the right words.
+function punctIt({ punct }) {
+  const s = pick(PUNCT[punct]), words = [], marks = {};
+  s.split(' ').forEach(tok => { const m = /^(.*?)\{(.)\}$/.exec(tok); if (m) { marks[words.length] = m[2]; words.push(m[1]); } else words.push(tok); });
+  const key = Object.keys(marks).map(k => `${k}${marks[k]}`).join('|');
+  return { template: 'punctuate', prompt: PUNCT_ASK[punct], answer: key, data: { words, need: Object.keys(marks).length },
+    hint: { end: 'Is it telling, asking, or showing strong feeling?', list: 'Commas go between the things in a list, but not before "and" or "or".', front: 'Put a comma after the opening words that tell when, where or how.' }[punct],
+    solution: [words.map((w, i) => esc(w) + (marks[i] ? `<b>${esc(marks[i])}</b>` : '')).join(' ')] };
+}
+Object.assign(GEN_EX, { sortIt, pairsIt, fixIt, punctIt });
