@@ -1,0 +1,732 @@
+{
+ "skills": [
+  {
+   "id": "en-s1",
+   "track": "sounds",
+   "modes": [
+    "little",
+    "explore",
+    "achieve",
+    "adult"
+   ],
+   "level": "JK",
+   "strand": "Phonics",
+   "icon": "🐍",
+   "title": "Sounds: s a t p",
+   "mix": [
+    "soundPic",
+    "firstLetter",
+    "soundPic"
+   ],
+   "params": {
+    "group": "s1",
+    "upTo": "s1"
+   },
+   "intro": "s1"
+  },
+  {
+   "id": "en-s2",
+   "track": "sounds",
+   "modes": [
+    "little",
+    "explore",
+    "achieve",
+    "adult"
+   ],
+   "level": "JK",
+   "strand": "Phonics",
+   "icon": "🐭",
+   "title": "Sounds: i n m d",
+   "mix": [
+    "soundPic",
+    "firstLetter",
+    "soundPic"
+   ],
+   "params": {
+    "group": "s2",
+    "upTo": "s2"
+   },
+   "intro": "s2",
+   "prereq": [
+    "en-s1"
+   ]
+  },
+  {
+   "id": "en-s3",
+   "track": "sounds",
+   "modes": [
+    "little",
+    "explore",
+    "achieve",
+    "adult"
+   ],
+   "level": "JK",
+   "strand": "Phonics",
+   "icon": "🐱",
+   "title": "Sounds: g o c k",
+   "mix": [
+    "soundPic",
+    "firstLetter",
+    "soundPic"
+   ],
+   "params": {
+    "group": "s3",
+    "upTo": "s3"
+   },
+   "intro": "s3",
+   "prereq": [
+    "en-s2"
+   ]
+  },
+  {
+   "id": "en-s4",
+   "track": "sounds",
+   "modes": [
+    "little",
+    "explore",
+    "achieve",
+    "adult"
+   ],
+   "level": "SK",
+   "strand": "Phonics",
+   "icon": "🥚",
+   "title": "Sounds: e u r h ck",
+   "mix": [
+    "soundPic",
+    "firstLetter",
+    "soundPic"
+   ],
+   "params": {
+    "group": "s4",
+    "upTo": "s4"
+   },
+   "intro": "s4",
+   "prereq": [
+    "en-s3"
+   ]
+  },
+  {
+   "id": "en-s5",
+   "track": "sounds",
+   "modes": [
+    "little",
+    "explore",
+    "achieve",
+    "adult"
+   ],
+   "level": "SK",
+   "strand": "Phonics",
+   "icon": "⚽",
+   "title": "Sounds: b f l j",
+   "mix": [
+    "soundPic",
+    "firstLetter",
+    "soundPic"
+   ],
+   "params": {
+    "group": "s5",
+    "upTo": "s5"
+   },
+   "intro": "s5",
+   "prereq": [
+    "en-s4"
+   ]
+  },
+  {
+   "id": "en-s6",
+   "track": "sounds",
+   "modes": [
+    "little",
+    "explore",
+    "achieve",
+    "adult"
+   ],
+   "level": "SK",
+   "strand": "Phonics",
+   "icon": "🦓",
+   "title": "Sounds: v w x y z qu",
+   "mix": [
+    "soundPic",
+    "firstLetter",
+    "soundPic"
+   ],
+   "params": {
+    "group": "s6",
+    "upTo": "s6"
+   },
+   "intro": "s6",
+   "prereq": [
+    "en-s5"
+   ]
+  },
+  {
+   "id": "en-blend1",
+   "track": "reading",
+   "modes": [
+    "little",
+    "explore",
+    "achieve",
+    "adult"
+   ],
+   "level": "SK",
+   "strand": "Blending",
+   "icon": "📌",
+   "title": "Read words: s a t p i n m d",
+   "gen": "blend",
+   "params": {
+    "upTo": "s2"
+   },
+   "intro": "blend",
+   "prereq": [
+    "en-s2"
+   ]
+  },
+  {
+   "id": "en-blend2",
+   "track": "reading",
+   "modes": [
+    "little",
+    "explore",
+    "achieve",
+    "adult"
+   ],
+   "level": "SK",
+   "strand": "Blending",
+   "icon": "🐶",
+   "title": "Read words: up to g o c k",
+   "gen": "blend",
+   "params": {
+    "upTo": "s3"
+   },
+   "intro": "blend",
+   "prereq": [
+    "en-blend1"
+   ]
+  },
+  {
+   "id": "en-blend3",
+   "track": "reading",
+   "modes": [
+    "little",
+    "explore",
+    "achieve",
+    "adult"
+   ],
+   "level": "G1",
+   "strand": "Blending",
+   "icon": "🐔",
+   "title": "Read words: up to e u r h",
+   "gen": "blend",
+   "params": {
+    "upTo": "s4"
+   },
+   "intro": "blend",
+   "prereq": [
+    "en-blend2"
+   ]
+  },
+  {
+   "id": "en-blend4",
+   "track": "reading",
+   "modes": [
+    "little",
+    "explore",
+    "achieve",
+    "adult"
+   ],
+   "level": "G1",
+   "strand": "Blending",
+   "icon": "🦊",
+   "title": "Read words: all the sounds",
+   "gen": "blend",
+   "params": {
+    "upTo": "s6"
+   },
+   "intro": "blend",
+   "prereq": [
+    "en-blend3"
+   ]
+  },
+  {
+   "id": "en-spell1",
+   "track": "reading",
+   "modes": [
+    "little",
+    "explore",
+    "achieve",
+    "adult"
+   ],
+   "level": "G1",
+   "strand": "Spelling",
+   "icon": "🗺️",
+   "title": "Spell words: s a t p i n m d g o c k",
+   "gen": "spellWord",
+   "params": {
+    "upTo": "s3"
+   },
+   "intro": "spell",
+   "prereq": [
+    "en-blend2"
+   ]
+  },
+  {
+   "id": "en-spell2",
+   "track": "reading",
+   "modes": [
+    "little",
+    "explore",
+    "achieve",
+    "adult"
+   ],
+   "level": "G1",
+   "strand": "Spelling",
+   "icon": "🚌",
+   "title": "Spell words: all the sounds",
+   "gen": "spellWord",
+   "params": {
+    "upTo": "s6"
+   },
+   "intro": "spell",
+   "prereq": [
+    "en-spell1"
+   ]
+  },
+  {
+   "id": "en-tricky1",
+   "track": "tricky",
+   "modes": [
+    "little",
+    "explore",
+    "achieve",
+    "adult"
+   ],
+   "level": "SK",
+   "strand": "Sight words",
+   "icon": "👀",
+   "title": "Tricky words: I, the, to, no, go",
+   "gen": "tricky",
+   "params": {
+    "set": "t1"
+   },
+   "intro": "t1"
+  },
+  {
+   "id": "en-tricky2",
+   "track": "tricky",
+   "modes": [
+    "little",
+    "explore",
+    "achieve",
+    "adult"
+   ],
+   "level": "G1",
+   "strand": "Sight words",
+   "icon": "💬",
+   "title": "Tricky words: he, she, we, was, you",
+   "gen": "tricky",
+   "params": {
+    "set": "t2"
+   },
+   "intro": "t2",
+   "prereq": [
+    "en-tricky1"
+   ]
+  },
+  {
+   "id": "en-tricky3",
+   "track": "tricky",
+   "modes": [
+    "little",
+    "explore",
+    "achieve",
+    "adult"
+   ],
+   "level": "G1",
+   "strand": "Sight words",
+   "icon": "📚",
+   "title": "Tricky words: they, said, have, like",
+   "gen": "tricky",
+   "params": {
+    "set": "t3"
+   },
+   "intro": "t3",
+   "prereq": [
+    "en-tricky2"
+   ]
+  },
+  {
+   "id": "en-rhyme1",
+   "track": "words",
+   "modes": [
+    "little",
+    "explore",
+    "achieve",
+    "adult"
+   ],
+   "level": "JK",
+   "strand": "Rhyme",
+   "icon": "🎩",
+   "title": "Rhyming pictures",
+   "gen": "rhyme",
+   "params": {
+    "easy": true
+   },
+   "intro": "rhyme"
+  },
+  {
+   "id": "en-rhyme2",
+   "track": "words",
+   "modes": [
+    "little",
+    "explore",
+    "achieve",
+    "adult"
+   ],
+   "level": "SK",
+   "strand": "Rhyme",
+   "icon": "🐝",
+   "title": "More rhymes",
+   "gen": "rhyme",
+   "intro": "rhyme",
+   "prereq": [
+    "en-rhyme1"
+   ]
+  },
+  {
+   "id": "en-v-animals",
+   "track": "words",
+   "modes": [
+    "little",
+    "explore",
+    "achieve",
+    "adult"
+   ],
+   "level": "JK",
+   "strand": "Vocabulary",
+   "icon": "🦁",
+   "title": "Animal words",
+   "gen": "vocab",
+   "params": {
+    "set": "animals"
+   }
+  },
+  {
+   "id": "en-v-food",
+   "track": "words",
+   "modes": [
+    "little",
+    "explore",
+    "achieve",
+    "adult"
+   ],
+   "level": "JK",
+   "strand": "Vocabulary",
+   "icon": "🍎",
+   "title": "Food words",
+   "gen": "vocab",
+   "params": {
+    "set": "food"
+   }
+  },
+  {
+   "id": "en-v-colours",
+   "track": "words",
+   "modes": [
+    "little",
+    "explore",
+    "achieve",
+    "adult"
+   ],
+   "level": "JK",
+   "strand": "Vocabulary",
+   "icon": "🎨",
+   "title": "Colour words",
+   "gen": "vocab",
+   "params": {
+    "set": "colours"
+   }
+  },
+  {
+   "id": "en-v-body",
+   "track": "words",
+   "modes": [
+    "little",
+    "explore",
+    "achieve",
+    "adult"
+   ],
+   "level": "SK",
+   "strand": "Vocabulary",
+   "icon": "✋",
+   "title": "My body",
+   "gen": "vocab",
+   "params": {
+    "set": "body"
+   }
+  },
+  {
+   "id": "en-v-clothes",
+   "track": "words",
+   "modes": [
+    "little",
+    "explore",
+    "achieve",
+    "adult"
+   ],
+   "level": "SK",
+   "strand": "Vocabulary",
+   "icon": "👕",
+   "title": "Clothes",
+   "gen": "vocab",
+   "params": {
+    "set": "clothes"
+   }
+  },
+  {
+   "id": "en-v-home",
+   "track": "words",
+   "modes": [
+    "little",
+    "explore",
+    "achieve",
+    "adult"
+   ],
+   "level": "SK",
+   "strand": "Vocabulary",
+   "icon": "🏠",
+   "title": "At home",
+   "gen": "vocab",
+   "params": {
+    "set": "home"
+   }
+  },
+  {
+   "id": "en-v-travel",
+   "track": "words",
+   "modes": [
+    "little",
+    "explore",
+    "achieve",
+    "adult"
+   ],
+   "level": "G1",
+   "strand": "Vocabulary",
+   "icon": "🚆",
+   "title": "On the move",
+   "gen": "vocab",
+   "params": {
+    "set": "travel"
+   }
+  },
+  {
+   "id": "en-vr-animals",
+   "track": "words",
+   "modes": [
+    "little",
+    "explore",
+    "achieve",
+    "adult"
+   ],
+   "level": "G1",
+   "strand": "Vocabulary",
+   "icon": "🐘",
+   "title": "Read animal words",
+   "gen": "vocab",
+   "params": {
+    "set": "animals",
+    "read": true
+   },
+   "prereq": [
+    "en-v-animals"
+   ]
+  },
+  {
+   "id": "en-vr-food",
+   "track": "words",
+   "modes": [
+    "little",
+    "explore",
+    "achieve",
+    "adult"
+   ],
+   "level": "G1",
+   "strand": "Vocabulary",
+   "icon": "🍌",
+   "title": "Read food words",
+   "gen": "vocab",
+   "params": {
+    "set": "food",
+    "read": true
+   },
+   "prereq": [
+    "en-v-food"
+   ]
+  },
+  {
+   "id": "en-vr-clothes",
+   "track": "words",
+   "modes": [
+    "little",
+    "explore",
+    "achieve",
+    "adult"
+   ],
+   "level": "G1",
+   "strand": "Vocabulary",
+   "icon": "🧦",
+   "title": "Read clothes words",
+   "gen": "vocab",
+   "params": {
+    "set": "clothes",
+    "read": true
+   },
+   "prereq": [
+    "en-v-clothes"
+   ]
+  },
+  {
+   "id": "en-story1",
+   "track": "stories",
+   "modes": [
+    "little",
+    "explore",
+    "achieve",
+    "adult"
+   ],
+   "level": "SK",
+   "strand": "Reading",
+   "icon": "🐱",
+   "title": "Story: Sam and the cat",
+   "gen": "story",
+   "params": {
+    "ids": [
+     "cat"
+    ]
+   },
+   "items": 3,
+   "prereq": [
+    "en-blend1"
+   ]
+  },
+  {
+   "id": "en-story2",
+   "track": "stories",
+   "modes": [
+    "little",
+    "explore",
+    "achieve",
+    "adult"
+   ],
+   "level": "SK",
+   "strand": "Reading",
+   "icon": "🐔",
+   "title": "Story: The red hen",
+   "gen": "story",
+   "params": {
+    "ids": [
+     "hen"
+    ]
+   },
+   "items": 3,
+   "prereq": [
+    "en-story1"
+   ]
+  },
+  {
+   "id": "en-story3",
+   "track": "stories",
+   "modes": [
+    "little",
+    "explore",
+    "achieve",
+    "adult"
+   ],
+   "level": "G1",
+   "strand": "Reading",
+   "icon": "🚌",
+   "title": "Story: Pip and the bus",
+   "gen": "story",
+   "params": {
+    "ids": [
+     "bus"
+    ]
+   },
+   "items": 3,
+   "prereq": [
+    "en-story2"
+   ]
+  },
+  {
+   "id": "en-story4",
+   "track": "stories",
+   "modes": [
+    "little",
+    "explore",
+    "achieve",
+    "adult"
+   ],
+   "level": "G1",
+   "strand": "Reading",
+   "icon": "🦊",
+   "title": "Story: The fox and the box",
+   "gen": "story",
+   "params": {
+    "ids": [
+     "fox"
+    ]
+   },
+   "items": 3,
+   "prereq": [
+    "en-story3"
+   ]
+  },
+  {
+   "id": "en-story5",
+   "track": "stories",
+   "modes": [
+    "little",
+    "explore",
+    "achieve",
+    "adult"
+   ],
+   "level": "G1",
+   "strand": "Reading",
+   "icon": "🪁",
+   "title": "Story: Jen's red kite",
+   "gen": "story",
+   "params": {
+    "ids": [
+     "kite"
+    ]
+   },
+   "items": 3,
+   "prereq": [
+    "en-story4"
+   ]
+  },
+  {
+   "id": "en-story6",
+   "track": "stories",
+   "modes": [
+    "little",
+    "explore",
+    "achieve",
+    "adult"
+   ],
+   "level": "G1",
+   "strand": "Reading",
+   "icon": "🐛",
+   "title": "Story: Ben and the bug",
+   "gen": "story",
+   "params": {
+    "ids": [
+     "bug"
+    ]
+   },
+   "items": 3,
+   "prereq": [
+    "en-story5"
+   ]
+  }
+ ]
+}

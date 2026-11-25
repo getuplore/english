@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en" data-mode="little">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<link rel="icon" type="image/png" href="img/icon-64.png">
+<link rel="apple-touch-icon" href="img/apple-touch-icon.png">
+<meta name="apple-mobile-web-app-title" content="Uplore English">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<title>Uplore English</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<script>
+// Older Safari: flag missing CSS features so css/compat.css can fill in.
+(function () {
+  var h = document.documentElement, ok = window.CSS && CSS.supports;
+  if (!(ok && CSS.supports('width', 'clamp(1px, 2px, 3px)'))) h.className += ' noclamp';
+  if (!(ok && CSS.supports('aspect-ratio', '1'))) h.className += ' noar';
+  var d = document.createElement('div'); d.style.cssText = 'display:flex;flex-direction:column;row-gap:1px;position:absolute';
+  d.appendChild(document.createElement('div')); d.appendChild(document.createElement('div')); h.appendChild(d);
+  if (d.scrollHeight !== 1) h.className += ' nogap'; h.removeChild(d);
+})();
+</script>
+<link rel="stylesheet" href="css/app.css">
+<link rel="stylesheet" href="css/compat.css">
+</head>
+<body>
+<div id="app"><div class="boot">Uplore English</div></div>
+<div id="toast" role="status"></div>
+<script>
+// If the app cannot start (very old browser or a script error), say so instead of showing a blank screen.
+(function () {
+  function fail(msg) {
+    var b = document.querySelector('#app .boot'); if (!b) return; // the app has drawn a screen: nothing to do
+    b.innerHTML = '<div style="max-width:30em;margin:auto;padding:24px;font:16px/1.5 system-ui,sans-serif;text-align:center">' +
+      '<b style="font-size:22px">Uplore English could not start</b><br>Please update this device (Settings → General → Software Update) or try another browser.' +
+      (msg ? '<br><small style="color:#666">Details: ' + String(msg).replace(/</g, '&lt;') + '</small>' : '') + '</div>';
+  }
+  window.onerror = function (m, src, line) { fail(m + ' (' + (src || '').split('/').pop().split('?')[0] + ':' + line + ')'); };
+  window.addEventListener('unhandledrejection', function (e) { fail(e.reason && (e.reason.message || e.reason)); });
+  setTimeout(function () { fail(''); }, 12000);
+})();
+</script>
+<script src="js/app.js?v=1795638380"></script>
+</body>
+</html>
