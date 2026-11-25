@@ -145,13 +145,13 @@ def run(size):
         p.evaluate("location.hash = 'debug'")
         p.click('.tab[data-t="sounds"]')
         open_skill(p, 'Sounds: s a t p'); p.wait_for_selector('.t-ex', timeout=6000)
-        check(tag + 'Learn first: the sounds intro shows a letter with its mouth picture', p.locator('.t-ex .exsound .mouth').count() == 1 and p.locator('.t-ex .exwords .pic').count() == 3)
+        check(tag + 'Learn first: the sounds intro shows a letter with its mouth picture', p.locator('.t-ex .exsound .mth').count() == 1 and p.locator('.t-ex .exwords .pic').count() == 3)
         p.click('.exskip')
         for _ in range(8):
             if p.is_visible('.results'): break
             p.wait_for_function("window.__act && document.querySelector('.host .opts, .host .tiles')", timeout=6000)
             before = p.evaluate("JSON.stringify(window.__act.data.options || window.__act.data.tiles)")
-            if p.locator('.t-choose .show .mouth').count(): check(tag + 'sound question shows the mouth picture', True)
+            if p.locator('.t-choose .show .mth').count(): check(tag + 'sound question shows the mouth picture', True)
             answer_item(p)
             p.wait_for_function("(b) => document.querySelector('.results') || JSON.stringify((window.__act||{}).data && (window.__act.data.options || window.__act.data.tiles)) !== b", arg=before, timeout=8000)
         p.wait_for_selector('.results', timeout=8000)
@@ -180,8 +180,8 @@ def run(size):
             if p.is_visible('.t-ex'): p.click('.exskip')
             p.wait_for_selector(sel, timeout=6000)
             if track == 'reading' and 'Read' in name:
-                p.click('.t-blend .tile[data-i="0"]'); check(tag + 'blending: tapping a letter shows its mouth picture', p.locator('.mouthbox .mouth').count() == 1)
-            if 'story' in sel: check(tag + 'story: US spelling and tappable words', p.locator('.stext .sw').count() > 10)
+                p.click('.t-blend .tile[data-i="0"]'); check(tag + 'blending: tapping a letter shows its mouth picture', p.locator('.mouthbox .mth').count() == 1)
+            if 'story' in sel: check(tag + 'story: US spelling and tappable words', p.locator('.stext .wd').count() > 10)
             before = p.evaluate("JSON.stringify(window.__act.data)"); answer_item(p)
             p.wait_for_function("(b) => JSON.stringify(window.__act.data) !== b || document.querySelector('.results')", arg=before, timeout=8000)
             check(tag + f'{name}: right answer accepted', True)

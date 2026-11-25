@@ -64,9 +64,9 @@ export const spell = {
 export const story = {
   render(host, act, ctx) {
     const d = act.data, st = d.story;
-    const words = st.text.split(/(\s+)/).map(w => /\s/.test(w) ? w : `<button class="sw" data-w="${esc(w.replace(/[^A-Za-z'-]/g, ''))}">${esc(w)}</button>`).join('');
+    const words = st.text.split(/(\s+)/).map(w => /\s/.test(w) ? w : `<button class="wd" data-w="${esc(w.replace(/[^A-Za-z'-]/g, ''))}">${esc(w)}</button>`).join('');
     host.innerHTML = `<div class="t-story"><article class="storycard"><div class="stop"><span class="pic">${st.pic}</span><h3>${esc(st.title)}</h3><button class="btn readme">${ICON.speak}<span>Read to me</span></button></div><p class="stext">${words}</p></article>${opts(d)}</div>`;
-    host.querySelector('.stext').addEventListener('click', e => { const b = e.target.closest('.sw'); if (b && b.dataset.w) { say(b.dataset.w); squash(b); } });
+    host.querySelector('.stext').addEventListener('click', e => { const b = e.target.closest(".wd"); if (b && b.dataset.w) { say(b.dataset.w); squash(b); } });
     host.querySelector('.readme').onclick = () => say(st.text);
     const g = optionsGrid(host, d, ctx);
     return { hint: l => g.hint(l, act.answer) };

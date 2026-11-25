@@ -750,7 +750,7 @@ details.lvl[open] > .skills { padding: 12px 4px 4px; }
 .t-choose .show,.t-spell .show{display:flex;justify-content:center;align-items:center;gap:16px;margin:0 0 18px}
 .bigl{display:flex;align-items:center;gap:clamp(12px,3vw,28px)}
 .bigl .glyph,.exsound .glyph{font:800 clamp(84px,14vw,140px)/1 "Baloo 2",system-ui;color:var(--acc)}
-.mouth{width:clamp(84px,12vw,112px);height:auto}
+.mth{width:clamp(84px,12vw,112px);height:auto;display:block;flex:none}
 .bigpic .pic{font-size:clamp(84px,14vw,120px)}
 .bigear{font-size:56px;line-height:1}
 .t-choose .opts,.t-blend .opts,.t-story .opts{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(140px,40vw),1fr));gap:14px;max-width:760px;margin:0 auto}
@@ -773,7 +773,7 @@ details.lvl[open] > .skills { padding: 12px 4px 4px; }
 .stop{display:flex;align-items:center;gap:12px;flex-wrap:wrap}.stop .pic{font-size:44px}.stop h3{margin:0;flex:1;font:800 26px/1.1 "Baloo 2",system-ui}
 .readme svg{width:22px;height:22px}
 .stext{font:600 clamp(22px,3vw,28px)/1.6 "Baloo 2",system-ui;margin:12px 0 0;color:var(--ink)}
-.sw{font:inherit;background:none;border:0;padding:0 2px;border-radius:6px;color:inherit;cursor:pointer}.sw:hover,.sw:focus-visible{background:#fff3bf}
+.wd{font:inherit;background:none;border:0;padding:0 2px;border-radius:6px;color:inherit;cursor:pointer}.wd:hover,.wd:focus-visible{background:#fff3bf}
 .t-story .opts .opt{min-height:64px;font-size:21px}
 .exsound{display:flex;align-items:center;justify-content:center;gap:20px}
 .extip{text-align:center;font-weight:700;font-size:18px;margin:12px 0}.exnote{text-align:center;color:var(--muted);margin:8px 0}
@@ -784,3 +784,11 @@ details.lvl[open] > .skills { padding: 12px 4px 4px; }
 .enmore{max-width:760px;margin:0 0 12px}
 .ring>svg,.upnext .ic>svg,.ptab td>svg{display:block}
 .ptab td>svg{width:34px;height:34px;flex:none}
+
+.htop a.who{text-decoration:none;color:inherit;min-width:0}
+.htop a.who .nm{overflow:hidden;text-overflow:ellipsis;white-space:nowrap;max-width:9em}
+.t-choose,.t-blend,.t-spell,.t-story{width:100%}
+.stext{display:block;white-space:normal;word-spacing:.08em}
+.stext .wd{display:inline;min-width:0;min-height:0;height:auto;margin:0;box-shadow:none;line-height:inherit;vertical-align:baseline;letter-spacing:normal;transform:none}
+.stop h3{flex:1 1 10em;min-width:0}
+.stop .readme{flex:none}

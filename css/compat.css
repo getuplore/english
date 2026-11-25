@@ -171,7 +171,7 @@
 .nogap .bigl>*{margin:calc(28px / 2)}
 .noclamp .bigl{gap:28px}
 .noclamp .bigl .glyph,.noclamp .exsound .glyph{font:800 140px/1 "Baloo 2",system-ui}
-.noclamp .mouth{width:112px}
+.noclamp .mth{width:112px}
 .noclamp .bigpic .pic{font-size:120px}
 .nogap .opts .opt>*{margin:calc(6px / 2)}
 .noclamp .opts .opt .pic{font-size:68px}

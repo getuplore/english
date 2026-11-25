@@ -57,5 +57,5 @@ export function mouth(letter) {
     growl: '<ellipse cx="60" cy="74" rx="15" ry="12" fill="#7a2a2a" stroke="#e8706a" stroke-width="6"/><path d="M52 80q8-6 16 0" fill="#ff8a8a"/>',
     j: '<ellipse cx="60" cy="75" rx="15" ry="11" fill="#7a2a2a" stroke="#e8706a" stroke-width="8"/><path d="M50 72h20" stroke="#fff" stroke-width="4" stroke-linecap="round"/>'
   }[k];
-  return `<svg class="mouth" viewBox="0 0 120 120" role="img" aria-label="${MOUTH_TIP[k]}">${face}<circle cx="40" cy="40" r="6" fill="#1d2b53"/><circle cx="80" cy="40" r="6" fill="#1d2b53"/>${m}</svg>`;
+  return `<svg class="mth" viewBox="0 0 120 120" role="img" aria-label="${MOUTH_TIP[k]}">${face}<circle cx="40" cy="40" r="6" fill="#1d2b53"/><circle cx="80" cy="40" r="6" fill="#1d2b53"/>${m}</svg>`;
 }
